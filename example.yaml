@@ -1,0 +1,63 @@
+version: 0.0.1
+examples:
+    - context: # 对话历史
+          - role: user
+            content: 查询美元兑人民币的汇率
+          - role: bot
+              # 触发插件
+            plugin:
+                # 应当触发的接口operationId
+                operationId: getExchangeRate
+                # 思考过程，对触发有帮助
+                thoughts: 这是一个查询汇率的需求，需要获取美元兑人民币的汇率
+                requestArguments:
+                    from_currency: USD
+                    to_currency: CNY
+                    amount: 1
+    - context: # 对话历史
+          - role: user
+            content: 100美元等于多少人民币？
+          - role: bot
+              # 触发插件
+            plugin:
+                # 应当触发的接口operationId
+                operationId: getExchangeRate
+                # 思考过程，对触发有帮助
+                thoughts: 这是一个货币转换的需求，需要将100美元转换为人民币
+                requestArguments:
+                    from_currency: USD
+                    to_currency: CNY
+                    amount: 100
+    - context: # 对话历史
+          - role: user
+            content: 欧元兑日元的汇率是多少？
+          - role: bot
+              # 触发插件
+            plugin:
+                # 应当触发的接口operationId
+                operationId: getExchangeRate
+                # 思考过程，对触发有帮助
+                thoughts: 这是一个查询汇率的需求，需要获取欧元兑日元的汇率
+                requestArguments:
+                    from_currency: EUR
+                    to_currency: JPY
+                    amount: 1
+    - context: # 对话历史
+          - role: user
+            content: 支持哪些货币？
+          - role: bot
+              # 触发插件
+            plugin:
+                # 应当触发的接口operationId
+                operationId: getSupportedCurrencies
+                # 思考过程，对触发有帮助
+                thoughts: 这是一个查询支持的货币列表的需求
+                requestArguments: {}
+    # 反例，无需触发此插件的任一某个接口
+    - context: # 对话历史
+          - role: user
+            content: 今天天气怎么样？
+          - role: bot
+              # 无需触发
+            plugin:
+                thoughts: 我不需要使用汇率查询工具 

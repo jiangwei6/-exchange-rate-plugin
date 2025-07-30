@@ -1,0 +1,118 @@
+openapi: 3.0.1
+info:
+    title: 汇率查询助手
+    description: 实时汇率查询工具，支持多种货币之间的汇率转换和查询
+    version: "v1"
+servers:
+    - url: http://localhost:8081  # 替换成你实际服务启动的地址和端口，调试环境可以是localhost，正式上线需要换成公网IP
+paths:
+    /get_exchange_rate:
+        get:
+            operationId: getExchangeRate
+            summary: 查询汇率
+            parameters:
+                - name: from_currency
+                  in: query
+                  required: true
+                  description: 源货币代码（如USD、CNY、EUR等）
+                  schema:
+                    type: string
+                    example: "USD"
+                - name: to_currency
+                  in: query
+                  required: true
+                  description: 目标货币代码（如USD、CNY、EUR等）
+                  schema:
+                    type: string
+                    example: "CNY"
+                - name: amount
+                  in: query
+                  required: false
+                  description: 转换金额（可选，默认为1）
+                  schema:
+                    type: number
+                    example: 100
+            responses:
+                "200":
+                    description: 汇率查询成功
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/exchangeRateResponse"
+                "400":
+                    description: 请求参数错误
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/errorResponse"
+                "500":
+                    description: 服务器内部错误
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/errorResponse"
+    /get_supported_currencies:
+        get:
+            operationId: getSupportedCurrencies
+            summary: 获取支持的货币列表
+            responses:
+                "200":
+                    description: 获取成功
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/supportedCurrenciesResponse"
+
+components:
+    schemas:
+        exchangeRateResponse:
+            type: object
+            required: [success, from_currency, to_currency, rate, amount, converted_amount]
+            properties:
+                success:
+                    type: boolean
+                    description: 请求是否成功
+                from_currency:
+                    type: string
+                    description: 源货币代码
+                to_currency:
+                    type: string
+                    description: 目标货币代码
+                rate:
+                    type: number
+                    description: 汇率
+                amount:
+                    type: number
+                    description: 转换金额
+                converted_amount:
+                    type: number
+                    description: 转换后的金额
+                last_updated:
+                    type: string
+                    description: 最后更新时间
+                from_currency_name:
+                    type: string
+                    description: 源货币名称
+                to_currency_name:
+                    type: string
+                    description: 目标货币名称
+        supportedCurrenciesResponse:
+            type: object
+            required: [success, currencies]
+            properties:
+                success:
+                    type: boolean
+                    description: 请求是否成功
+                currencies:
+                    type: object
+                    description: 支持的货币列表
+        errorResponse:
+            type: object
+            required: [success, error]
+            properties:
+                success:
+                    type: boolean
+                    description: 请求是否成功
+                error:
+                    type: string
+                    description: 错误信息 
