@@ -11,7 +11,7 @@
         "type": "openapi",
         "url": "PLUGIN_HOST/.well-known/openapi.yaml"
     },
-    "logo_url": "PLUGIN_HOST/logo.png",
+    "logo_url": "https://pic1.imgdb.cn/item/68897bee58cb8da5c8ee97b8.png",
     "contact_email": "support@example.com",
     "legal_info_url": "http://www.example.com/legal"
 } 
