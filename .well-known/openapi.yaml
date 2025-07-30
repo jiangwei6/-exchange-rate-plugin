@@ -106,9 +106,67 @@ components:
                 currencies:
                     type: object
                     description: 支持的货币列表
-                    additionalProperties:
-                        type: string
-                        description: 货币名称
+                    properties:
+                        USD:
+                            type: string
+                            description: 美元
+                        CNY:
+                            type: string
+                            description: 人民币
+                        EUR:
+                            type: string
+                            description: 欧元
+                        GBP:
+                            type: string
+                            description: 英镑
+                        JPY:
+                            type: string
+                            description: 日元
+                        KRW:
+                            type: string
+                            description: 韩元
+                        HKD:
+                            type: string
+                            description: 港币
+                        AUD:
+                            type: string
+                            description: 澳元
+                        CAD:
+                            type: string
+                            description: 加元
+                        CHF:
+                            type: string
+                            description: 瑞士法郎
+                        SGD:
+                            type: string
+                            description: 新加坡元
+                        THB:
+                            type: string
+                            description: 泰铢
+                        MYR:
+                            type: string
+                            description: 马来西亚林吉特
+                        IDR:
+                            type: string
+                            description: 印尼盾
+                        PHP:
+                            type: string
+                            description: 菲律宾比索
+                        VND:
+                            type: string
+                            description: 越南盾
+                        INR:
+                            type: string
+                            description: 印度卢比
+                        BRL:
+                            type: string
+                            description: 巴西雷亚尔
+                        RUB:
+                            type: string
+                            description: 俄罗斯卢布
+                        ZAR:
+                            type: string
+                            description: 南非兰特
         errorResponse:
             type: object
             required: [success, error]
