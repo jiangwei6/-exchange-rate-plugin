@@ -106,6 +106,9 @@ components:
                 currencies:
                     type: object
                     description: 支持的货币列表
+                    additionalProperties:
+                        type: string
+                        description: 货币名称
         errorResponse:
             type: object
             required: [success, error]
