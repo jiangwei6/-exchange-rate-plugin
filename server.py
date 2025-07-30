@@ -179,8 +179,10 @@ async def openapi_spec():
     注册用的：返回插件所依赖的插件服务的API接口描述，参照 openapi 规范编写。
     注意：API 路由是固定的，事先约定的。
     """
+    # 使用环境变量获取域名，如果没有则使用请求的域名
+    base_url = os.environ.get('BASE_URL', request.host_url.rstrip('/'))
     with open(".well-known/openapi.yaml", encoding="utf-8") as f:
-        text = f.read()
+        text = f.read().replace("PLUGIN_HOST", base_url)
         return text, 200, {"Content-Type": "text/yaml"}
 
 @app.route("/example.yaml")

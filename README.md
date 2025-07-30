@@ -8,6 +8,7 @@
 - 实时获取最新汇率数据
 - 支持货币转换计算
 - 使用免费的汇率API，无需注册
+- **动态URL配置**：自动根据部署环境生成正确的URL
 
 ## 支持的货币
 
@@ -39,17 +40,40 @@
 pip install -r requirements.txt
 ```
 
-### 2. 启动服务器
+### 2. 配置环境变量
+复制环境变量示例文件：
+```bash
+cp env.example .env
+```
+
+编辑 `.env` 文件，设置本地开发环境：
+```
+BASE_URL=http://localhost:8081
+PORT=8081
+```
+
+### 3. 启动服务器
 ```bash
 python server.py
 ```
 
 服务器将在 http://localhost:8081 启动
 
-### 3. 测试API
-访问以下地址测试：
+### 4. 测试插件
+运行测试脚本：
+```bash
+python test_plugin.py
+```
+
+运行配置测试：
+```bash
+python test_config.py
+```
+
+或手动测试：
 - 汇率查询：http://localhost:8081/get_exchange_rate?from_currency=USD&to_currency=CNY&amount=100
 - 支持的货币：http://localhost:8081/get_supported_currencies
+- 插件配置：http://localhost:8081/.well-known/ai-plugin.json
 
 ## 部署到Railway
 
@@ -68,10 +92,12 @@ python server.py
 3. Railway会自动检测Python项目并部署
 4. 获取Railway提供的域名
 
-### 3. 更新配置
-部署完成后，需要更新以下文件中的URL：
-- `.well-known/ai-plugin.json` 中的 `PLUGIN_HOST`
-- `.well-known/openapi.yaml` 中的服务器URL
+### 3. 环境变量配置
+Railway会自动设置以下环境变量：
+- `PORT`: 服务器端口
+- `BASE_URL`: 你的Railway域名
+
+插件会自动根据环境变量生成正确的URL，无需手动修改配置文件。
 
 ## 使用示例
 
@@ -83,6 +109,23 @@ python server.py
 4. "帮我转换500欧元到美元"
 5. "支持哪些货币？"
 
+## 动态URL配置
+
+本插件使用动态URL配置，会根据部署环境自动生成正确的URL：
+
+### 本地开发
+- 环境变量：`BASE_URL=http://localhost:8081`
+- 自动生成：`http://localhost:8081/.well-known/openapi.yaml`
+
+### Railway部署
+- 环境变量：`BASE_URL=https://your-app-name.railway.app`
+- 自动生成：`https://your-app-name.railway.app/.well-known/openapi.yaml`
+
+### 配置文件
+- `ai-plugin.json` 中的 `PLUGIN_HOST` 会被自动替换
+- `openapi.yaml` 中的 `PLUGIN_HOST` 会被自动替换
+- 无需手动修改任何配置文件
+
 ## 文件结构
 
 ```
@@ -90,15 +133,25 @@ exchange_rate_plugin/
 ├── .well-known/
 │   ├── ai-plugin.json          # 插件配置文件
 │   └── openapi.yaml           # OpenAPI规范文件
+├── .github/workflows/
+│   └── deploy.yml             # GitHub Actions部署配置
 ├── server.py                   # 服务器代码
 ├── requirements.txt            # 依赖文件
 ├── example.yaml               # 示例文件
 ├── logo.png                   # 插件图标
-└── README.md                  # 说明文档
+├── test_plugin.py             # 功能测试脚本
+├── test_config.py             # 配置测试脚本
+├── railway.json               # Railway配置
+├── env.example                # 环境变量示例
+├── start.bat                  # Windows启动脚本
+├── README.md                  # 说明文档
+├── DEPLOYMENT_GUIDE.md        # 详细部署指南
+└── QUICK_START.md            # 快速开始指南
 ```
 
 ## 注意事项
 
 - 汇率数据来源于免费的ExchangeRate-API
 - 汇率数据会定期更新
-- 建议在生产环境中使用付费API以获得更稳定的服务 
+- 建议在生产环境中使用付费API以获得更稳定的服务
+- **无需手动修改URL配置**：插件会自动处理 

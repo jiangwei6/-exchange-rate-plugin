@@ -4,7 +4,7 @@ info:
     description: 实时汇率查询工具，支持多种货币之间的汇率转换和查询
     version: "v1"
 servers:
-    - url: http://localhost:8081  # 替换成你实际服务启动的地址和端口，调试环境可以是localhost，正式上线需要换成公网IP
+    - url: PLUGIN_HOST  # 这个会被服务器动态替换
 paths:
     /get_exchange_rate:
         get:

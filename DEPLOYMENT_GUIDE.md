@@ -13,14 +13,26 @@ cd exchange_rate_plugin
 pip install -r requirements.txt
 ```
 
-### 3. 启动服务器
+### 3. 配置环境变量
+复制环境变量示例文件：
+```bash
+cp env.example .env
+```
+
+编辑 `.env` 文件，设置本地开发环境：
+```
+BASE_URL=http://localhost:8081
+PORT=8081
+```
+
+### 4. 启动服务器
 ```bash
 python server.py
 ```
 
 服务器将在 http://localhost:8081 启动
 
-### 4. 测试插件
+### 5. 测试插件
 运行测试脚本：
 ```bash
 python test_plugin.py
@@ -36,6 +48,7 @@ python test_plugin.py
 1. 在GitHub上创建新仓库
 2. 将代码推送到仓库：
 ```bash
+cd exchange_rate_plugin
 git init
 git add .
 git commit -m "Initial commit: Exchange Rate Plugin"
@@ -68,54 +81,47 @@ git push -u origin main
 ### 3. 配置环境变量
 在Railway项目设置中添加环境变量：
 - `PORT`: 8081（Railway会自动设置）
+- `BASE_URL`: 部署后会自动设置为你的Railway域名
 
 ### 4. 部署
 Railway会自动检测Python项目并部署。部署完成后，你会获得一个域名，类似：
 `https://your-app-name.railway.app`
 
-## 更新插件配置
+## 环境变量配置
 
-部署完成后，需要更新以下文件中的URL：
-
-### 1. 更新 ai-plugin.json
-将 `PLUGIN_HOST` 替换为你的Railway域名：
-```json
-{
-  "api": {
-    "url": "https://your-app-name.railway.app/.well-known/openapi.yaml"
-  },
-  "logo_url": "https://your-app-name.railway.app/logo.png",
-  "examples": {
-    "url": "https://your-app-name.railway.app/example.yaml"
-  }
-}
+### 本地开发
+创建 `.env` 文件：
+```
+BASE_URL=http://localhost:8081
+PORT=8081
 ```
 
-### 2. 更新 openapi.yaml
-将服务器URL更新为你的Railway域名：
-```yaml
-servers:
-  - url: https://your-app-name.railway.app
-```
+### Railway部署
+Railway会自动设置以下环境变量：
+- `PORT`: 服务器端口
+- `BASE_URL`: 你的Railway域名
+
+你可以在Railway项目设置中手动添加或修改环境变量。
 
 ## 注册到百度智能体平台
 
 ### 1. 准备文件
-确保以下文件都已更新为正确的URL：
-- `.well-known/ai-plugin.json`
-- `.well-known/openapi.yaml`
-- `example.yaml`
-- `logo.png`
+插件会自动根据环境变量生成正确的URL，无需手动修改配置文件。
 
 ### 2. 上传插件
 1. 访问 [百度智能体平台](https://agents.baidu.com/)
 2. 点击「创建插件」
 3. 上传以下文件：
-   - `ai-plugin.json`
-   - `openapi.yaml`
+   - `ai-plugin.json`（从你的Railway域名获取）
+   - `openapi.yaml`（从你的Railway域名获取）
    - `logo.png`
 
-### 3. 测试插件
+### 3. 获取插件配置文件
+访问以下URL获取配置文件：
+- `https://your-app-name.railway.app/.well-known/ai-plugin.json`
+- `https://your-app-name.railway.app/.well-known/openapi.yaml`
+
+### 4. 测试插件
 在平台上测试以下查询：
 - "查询美元兑人民币的汇率"
 - "100美元等于多少人民币？"
@@ -140,6 +146,11 @@ servers:
    - 检查网络连接
    - 确认汇率API服务正常
    - 查看服务器日志
+
+4. **环境变量问题**
+   - 检查Railway环境变量设置
+   - 确认 `BASE_URL` 是否正确
+   - 查看服务器日志中的环境变量
 
 ### 日志查看
 - Railway: 在项目页面查看部署日志
