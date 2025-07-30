@@ -58,7 +58,7 @@ def get_exchange_rate(from_currency, to_currency):
         data = response.json()
         
         if data.get("result") == "success":
-            rates = data.get("conversion_rates", {})
+            rates = data.get("rates", {})
             
             if to_currency in rates:
                 rate = rates[to_currency]
